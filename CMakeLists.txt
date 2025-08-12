@@ -21,7 +21,14 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(OS_LIBS opengl32 gdi32 ole32 comdlg32)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     add_compile_definitions(OSX)
-    add_compile_options(-mmacosx-version-min=10.9 -arch x86_64 -arch arm64)
+    # Let CMake manage the target architecture to avoid passing stray tokens such
+    # as a standalone "arm64" to the compiler.  Default to the host architecture
+    # but allow callers to override CMAKE_OSX_ARCHITECTURES if they need a
+    # universal build.
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "" FORCE)
+    if(NOT DEFINED CMAKE_OSX_ARCHITECTURES OR CMAKE_OSX_ARCHITECTURES STREQUAL "")
+        set(CMAKE_OSX_ARCHITECTURES "${CMAKE_HOST_SYSTEM_PROCESSOR}" CACHE STRING "" FORCE)
+    endif()
     list(APPEND OS_LIBS
         "-framework CoreVideo" "-framework IOKit" "-framework Cocoa"
         "-framework GLUT" "-framework OpenGL")
