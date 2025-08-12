@@ -1,0 +1,15 @@
+{
+  "files.associations": {
+    "queue": "c",
+    "stack": "c",
+    "random": "c",
+    "__locale": "c",
+    "ios": "c",
+    "entity.h": "c",
+    "tinyfiledialogs.h": "c",
+    "transition.h": "c"
+  },
+  "C_Cpp.default.includePath": [],
+  "files.eol": "\n",
+  "cmake.configureOnOpen": false
+}
