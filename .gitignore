@@ -20,3 +20,9 @@ linux/starterkit32
 linux/starterkit64
 linux/res
 storage.data
+
+# CMake build
+build/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake

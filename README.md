@@ -16,6 +16,13 @@ You can run the project in VSCode. From the command-line, it's just:
 > make
 ```
 
+Alternatively, using CMake:
+
+```
+> cmake -S . -B build
+> cmake --build build
+```
+
 ## Releasing
 
 You can release your project to itch.io as follows:
