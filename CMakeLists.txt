@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.15)
 project(starterkit C)
 
+# On macOS raylib's amalgamated `rglfw.c` includes Objective-C sources.
+# Enable Objective-C language support so the file can be compiled correctly
+# when configuring on that platform.
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    enable_language(OBJC)
+endif()
+
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
@@ -60,6 +67,12 @@ add_library(raylib STATIC ${RAYLIB_SOURCES})
 target_compile_options(raylib PRIVATE -w -fcommon)
 target_compile_definitions(raylib PUBLIC PLATFORM_DESKTOP)
 target_include_directories(raylib PUBLIC vendor/raylib vendor/raylib/external/glfw/include)
+
+# rglfw.c pulls in Objective-C sources on macOS; build it using the
+# Objective-C compiler so the Cocoa files are handled correctly.
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set_source_files_properties(vendor/raylib/rglfw.c PROPERTIES LANGUAGE OBJC)
+endif()
 
 file(GLOB FLECS_SOURCES vendor/flecs/*.c)
 add_library(flecs STATIC ${FLECS_SOURCES})
